@@ -14,10 +14,25 @@ if uploaded_file is not None:
 
 
 
+video_file = st.file_uploader("Upload a video file", type=["mp4", "avi", "mov", "mkv"])
+
+if video_file is not None:
+    # Display video file details
+    file_details = {
+        "Filename": video_file.name,
+        "FileType": video_file.type,
+        "FileSize": f"{video_file.size / 1024 / 1024:.2f} MB"
+    }
+    st.write("File Details:", file_details)
+    
+    # Display the video
+    st.video(video_file)
+
 
 
 if st.button("Go to Results Page ➡️"):
     
     st.switch_page("pages/page_1.py")
     
+
 
