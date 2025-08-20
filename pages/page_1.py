@@ -16,6 +16,7 @@ colCon, colPie, colRea, colButtons = st.columns(4,border=True, width="stretch")
 #Senti_Image = ImgSel.ImgSelector(Sentiment)
 
 Senti_Image = Select_image("negative")
+Usr_Str = st.session_state.get("Usr_Str", "No input provided.")
 
 
 with colCon:
@@ -35,7 +36,8 @@ with colPie:
 with colRea:
     st.subheader("Related Texts")
     # Placeholder for related texts
-    st.write("Here you can display texts related to the input text.")
+    st.write(Usr_Str)
+             
 
 with colButtons:
     st.button("Download in json")
