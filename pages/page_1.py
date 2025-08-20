@@ -1,4 +1,6 @@
 import streamlit as st
+from ImgSelector import Select_image
+import plotly.express as px
 
 st.set_page_config(
     page_title="Analysis Results",
@@ -10,16 +12,25 @@ st.title("Analysis Results")
 # create a clock for each type of result we want to produce
 colCon, colPie, colRea, colButtons = st.columns(4,border=True, width="stretch")
 
+#This is when lee gives me code i can use
+#Senti_Image = ImgSel.ImgSelector(Sentiment)
+
+Senti_Image = Select_image("negative")
+
+
 with colCon:
     st.subheader("Sentiment Analysis Results \n Negative")
-    st.image("images/negative.png")
+    st.image(Senti_Image)
 
     st.write("Confidence score: 25%")
 
 with colPie:
+    labels = ["Positive", "Neutral", "Negative"]
+    values = [45, 30, 25]
+
     st.subheader("Sentiment Distribution")
-    # Placeholder for pie chart
-    st.write("Here you can display a pie chart of the sentiment distribution.")
+    fig = px.pie(names=labels, values=values, title="Sentiment Distribution", hole=0.3)
+    st.plotly_chart(fig)
 
 with colRea:
     st.subheader("Related Texts")
