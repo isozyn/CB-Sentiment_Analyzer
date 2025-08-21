@@ -8,69 +8,71 @@ from explanation import extract_keywords, explain_classification
 from comparison import compare_sentiment
 import numpy as np
 
-def test_all_functions():
-    # Test data
-    texts = [
-        "I love this product! It's amazing!",
-        "This is terrible. I hate it.",
-        "The weather is okay today."
+
+# 🔹 Unified function: analyze a single string with all tools
+def analyze_user_input(user_text: str):
+    print("\n---------------------------------")
+    print(f"User Input: '{user_text}'")
+
+    # 1. Sentiment analysis
+    sentiment_result = analyze_text(user_text)
+    print(f"[Sentiment Analysis] → {sentiment_result['sentiment']} "
+          f"(Confidence: {sentiment_result['confidence']:.3f})")
+
+    # 2. Multi-class classification
+    classification = multi_class_classification(user_text)
+    print(f"[Classification] → {classification['classification']}")
+    print(f"[Classification Scores] → {classification['confidence_scores']}")
+
+    # 3. Keyword extraction
+    keywords = extract_keywords(user_text)
+    print(f"[Keywords] → {keywords}")
+
+    # 4. Explanation
+    explanation = explain_classification(user_text)
+    print(f"[Explanation] → {explanation['explanation']}")
+
+    return {
+        "sentiment": sentiment_result,
+        "classification": classification,
+        "keywords": keywords,
+        "explanation": explanation
+    }
+
+
+# 🔹 Test multiple strings in sections
+def test_user_input_analysis():
+    test_strings = [
+        "I absolutely adore this game, it’s so fun!",
+        "This food is disgusting, I’m never coming back.",
+        "It’s an average day, nothing special."
     ]
-    
-    print("=== Testing analyze_text ===")
-    for text in texts:
-        result = analyze_text(text)
-        print(f"'{text}' → {result['sentiment']} ({result['confidence']:.3f})")
-    
-    print("\n=== Testing multi_class_classification ===")
-    result = multi_class_classification(texts[0])
-    print(f"Text: '{result['text']}'")
-    print(f"Classification: {result['classification']}")
-    print(f"Confidence Distribution: {result['confidence_scores']}")
-    
-    print("\n=== Testing extract_keywords ===")
-    keywords = extract_keywords(texts[0])
-    print(f"Keywords from '{texts[0]}': {keywords}")
-    
-    print("\n=== Testing explain_classification ===")
-    explanation = explain_classification(texts[1])
-    print(f"Explanation: {explanation['explanation']}")
-    
-    print("\n=== Testing compare_sentiment ===")
+
+    results = []
+    for text in test_strings:
+        result = analyze_user_input(text)
+        results.append(result)
+
+    return results
+
+
+# 🔹 Compare sentiment across all test strings
+def test_comparison_on_all():
+    texts = [
+        "I absolutely adore this game, it’s so fun!",
+        "This food is disgusting, I’m never coming back.",
+        "It’s an average day, nothing special."
+    ]
+
+    print("\n=== Overall Sentiment Comparison ===")
     comparison = compare_sentiment(texts)
     print(f"Summary: {comparison['summary']}")
     print(f"Total texts: {comparison['total_texts']}")
 
-def interactive_analysis():
-    while True:
-        text = input("\nEnter text to analyze (or 'quit' to exit): ")
-        if text.lower() == 'quit':
-            break
-            
-        # Basic sentiment
-        basic = analyze_text(text)
-        print("\n=== Basic Sentiment Analysis ===")
-        print(f"Overall Sentiment: {basic['sentiment']}")
-        print(f"Confidence Score: {basic['confidence']:.3f}")
-        
-        # Detailed classification
-        multi = multi_class_classification(text)
-        print("\n=== Detailed Sentiment Distribution ===")
-        for label, score in multi['confidence_scores'].items():
-            print(f"{label.capitalize()}: {score:.2f}%")
-        
-        # Keywords and explanation
-        explain = explain_classification(text)
-        print("\n=== Detailed Analysis ===")
-        print(f"Key sentiment words: {', '.join(explain['keywords'])}")
-        print(f"Analysis explanation: {explain['explanation']}")
 
 if __name__ == "__main__":
-    choice = input("Select mode (1 for test suite, 2 for interactive analysis): ")
-    if choice == "1":
-        test_all_functions()
-    elif choice == "2":
-        print("\nSentiment Analysis Interactive Mode")
-        print("----------------------------------")
-        interactive_analysis()
-    else:
-        print("Invalid choice. Exiting.")
+    # Run per-string section analysis
+    test_user_input_analysis()
+
+    # Run overall comparison
+    test_comparison_on_all()
