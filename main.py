@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-from docx import Document
-import PyPDF2
 import json
 
 
@@ -39,15 +37,6 @@ if uploaded_file is not None:
             Usr_Str_list = [str(x) for x in data if str(x).strip()]
         elif isinstance(data, dict) and 'sentences' in data:
             Usr_Str_list = [str(x) for x in data['sentences'] if str(x).strip()]
-    elif file_type == "docx":
-        doc = Document(uploaded_file)
-        Usr_Str_list = [para.text.strip() for para in doc.paragraphs if para.text.strip()]
-    elif file_type == "pdf":
-        pdf_reader = PyPDF2.PdfReader(uploaded_file)
-        text = ""
-        for page in pdf_reader.pages:
-            text += page.extract_text() + "\n"
-        Usr_Str_list = [line.strip() for line in text.split('\n') if line.strip()]
 else:
     Usr_Str_list = [line.strip() for line in Usr_Str.split('\n') if line.strip()]
 
