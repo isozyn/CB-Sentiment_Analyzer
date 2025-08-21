@@ -3,9 +3,12 @@ from ImgSelector import Select_image
 import plotly.express as px
 
 st.set_page_config(
-    page_title="Analysis Results",
-    page_icon="📊",
+page_title="Sentiment Analyzer",
+page_icon="🌟",
+layout="wide",
+initial_sidebar_state="expanded"
 )
+
 
 st.title("Analysis Results")
 
