@@ -1,0 +1,6 @@
+vaderSentiment
+opencv-python
+numpy
+streamlit
+plotly
+pandas
