@@ -5,7 +5,12 @@ import PyPDF2
 import json
 
 
-
+st.set_page_config(
+page_title="Main Page",
+page_icon="🏠",
+layout="wide",
+initial_sidebar_state="expanded"
+)
 Usr_Str =st.text_input("Sentiment checker", value="", max_chars=None, type="default", help=None, autocomplete=None, on_change=None, args=None, kwargs=None,  placeholder="Please enter your sentance here", disabled=False, label_visibility="visible", icon=None, width="stretch")
 
 

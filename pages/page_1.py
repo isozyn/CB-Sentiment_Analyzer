@@ -57,14 +57,14 @@ for idx, Usr_Str in enumerate(Usr_Str_list, 1):
 json_data = json.dumps(results, indent=2)
 csv_data = pd.DataFrame(results).to_csv(index=False)
 st.download_button(
-    label="Download in json",
+    label="📄Download in json",
     data=json_data,
     file_name="sentiment_results.json",
     mime="application/json"
 )
 
 st.download_button(
-    label="Download in csv",
+    label="📊Download in csv",
     data=csv_data,
     file_name="sentiment_results.csv",
     mime="text/csv"
