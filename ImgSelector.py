@@ -4,4 +4,4 @@ def Select_image(sentiment):
     elif sentiment == "negative":
         return("images/negative.png")
     elif sentiment == "neutral":
-        return("images/neutral.png")
+        return("images/nuetral.png")

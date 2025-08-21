@@ -1,6 +1,12 @@
 import streamlit as st
 from ImgSelector import Select_image
 import plotly.express as px
+import numpy as np
+from analysis import analyze_text, multi_class_classification
+from explanation import extract_keywords, explain_classification
+from comparison import compare_sentiment
+
+
 
 st.set_page_config(
 page_title="Sentiment Analyzer",
@@ -18,28 +24,41 @@ colCon, colPie, colRea, colButtons = st.columns(4,border=True, width="stretch")
 #This is when lee gives me code i can use
 #Senti_Image = ImgSel.ImgSelector(Sentiment)
 
-Senti_Image = Select_image("negative")
+
+
+
+
 Usr_Str = st.session_state.get("Usr_Str", "No input provided.")
+sentiment_result = analyze_text(Usr_Str)
+classification = multi_class_classification(Usr_Str)
+
+
+Senti_Image = Select_image(sentiment_result['sentiment'])
 
 
 with colCon:
-    st.subheader("Sentiment Analysis Results \n Negative")
+    st.subheader("Sentiment Analysis Results \n"+sentiment_result['sentiment'])
     st.image(Senti_Image)
 
-    st.write("Confidence score: 25%")
+    st.write("Confidence score: " + str(int(sentiment_result['confidence']*100)) + "%")
+
 
 with colPie:
     labels = ["Positive", "Neutral", "Negative"]
-    values = [45, 30, 25]
+    values = classification['confidence_scores']
 
     st.subheader("Sentiment Distribution")
     fig = px.pie(names=labels, values=values, title="Sentiment Distribution", hole=0.3)
     st.plotly_chart(fig)
 
 with colRea:
-    st.subheader("Related Texts")
+    st.subheader("Explanation")
     # Placeholder for related texts
     st.write(Usr_Str)
+
+    explanation = explain_classification(Usr_Str)
+    st.write(f" {explanation['explanation']}")
+
              
 
 with colButtons:
