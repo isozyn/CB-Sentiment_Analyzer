@@ -27,39 +27,45 @@ colCon, colPie, colRea, colButtons = st.columns(4,border=True, width="stretch")
 
 
 
-
+Usr_Str_list = st.session_state.get("Usr_Str_list", ["No input provided."])
 Usr_Str = st.session_state.get("Usr_Str", "No input provided.")
 sentiment_result = analyze_text(Usr_Str)
 classification = multi_class_classification(Usr_Str)
 
+for idx, Usr_Str in enumerate(Usr_Str_list, 1):
+    st.header(f"Sentence {idx}")
+    sentiment_result = analyze_text(Usr_Str)
+    classification = multi_class_classification(Usr_Str)
+    
+    Senti_Image = Select_image(sentiment_result['sentiment'])
+    
+    colCon, colPie, colRea, colButtons = st.columns(4,border=True, width="stretch")
 
-Senti_Image = Select_image(sentiment_result['sentiment'])
+
+    with colCon:
+        st.subheader("Sentiment Analysis Results \n"+sentiment_result['sentiment'])
+        st.image(Senti_Image)
+
+        st.write("Confidence score: " + str(int(sentiment_result['confidence']*100)) + "%")
 
 
-with colCon:
-    st.subheader("Sentiment Analysis Results \n"+sentiment_result['sentiment'])
-    st.image(Senti_Image)
+    with colPie:
+        labels = ["Positive", "Neutral", "Negative"]
+        values = classification['confidence_scores']
 
-    st.write("Confidence score: " + str(int(sentiment_result['confidence']*100)) + "%")
+        st.subheader("Sentiment Distribution")
+        fig = px.pie(names=labels, values=values, title="Sentiment Distribution", hole=0.3)
+        st.plotly_chart(fig)
 
+    with colRea:
+        st.subheader("Explanation")
+        # Placeholder for related texts
+        st.write(Usr_Str)
 
-with colPie:
-    labels = ["Positive", "Neutral", "Negative"]
-    values = classification['confidence_scores']
+        explanation = explain_classification(Usr_Str)
+        st.write(f" {explanation['explanation']}")
 
-    st.subheader("Sentiment Distribution")
-    fig = px.pie(names=labels, values=values, title="Sentiment Distribution", hole=0.3)
-    st.plotly_chart(fig)
-
-with colRea:
-    st.subheader("Explanation")
-    # Placeholder for related texts
-    st.write(Usr_Str)
-
-    explanation = explain_classification(Usr_Str)
-    st.write(f" {explanation['explanation']}")
-
-             
+    st.markdown("---")  # Separator between sentences           
 
 with colButtons:
     st.button("Download in json")
