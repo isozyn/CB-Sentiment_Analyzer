@@ -117,4 +117,3 @@ for idx, Usr_Str in enumerate(Usr_Str_list, 1):
         st.write(f" {explanation['explanation']}")
 
     st.markdown("---")  # Separator between sentences           
-print(type(Senti_Image))
