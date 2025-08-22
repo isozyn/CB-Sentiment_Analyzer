@@ -77,8 +77,19 @@ for idx, Usr_Str in enumerate(Usr_Str_list, 1):
     st.header(f"Sentence {idx}")
     sentiment_result = analyze_text(Usr_Str)
     classification = multi_class_classification(Usr_Str)
+    st.write(type(sentiment_result['sentiment']))
     
-    Senti_Image = Select_image(sentiment_result['sentiment'])
+
+    sentiment_value = sentiment_result['sentiment']
+
+    # if it's a list, grab the first element
+    if isinstance(sentiment_value, list):
+        sentiment_value = sentiment_value[0]
+
+    # ensure it's a string
+    sentiment_value = str(sentiment_value)
+
+    Senti_Image = Select_image(sentiment_value)
     
     colCon, colPie, colRea = st.columns(3,border=True, width="stretch")
 
