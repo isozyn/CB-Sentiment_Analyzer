@@ -77,7 +77,6 @@ for idx, Usr_Str in enumerate(Usr_Str_list, 1):
     st.header(f"Sentence {idx}")
     sentiment_result = analyze_text(Usr_Str)
     classification = multi_class_classification(Usr_Str)
-    st.write(type(sentiment_result['sentiment']))
     
 
     sentiment_value = sentiment_result['sentiment']
