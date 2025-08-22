@@ -1,7 +1,9 @@
+import os
+
 def Select_image(sentiment):
-    if sentiment == "positive":
-        return("images/positive.png")
-    elif sentiment == "negative":
-        return("images/negative.png")
-    elif sentiment == "neutral":
-        return("images/nuetral.png")
+    if sentiment.lower() == "negative":
+        return os.path.join("images", "negative.png")
+    elif sentiment.lower() == "positive":
+        return os.path.join("images", "positive.png")
+    else:
+        return os.path.join("images", "neutral.png")
