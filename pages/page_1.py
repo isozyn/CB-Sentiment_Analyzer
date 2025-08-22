@@ -7,30 +7,20 @@ from explanation import extract_keywords, explain_classification
 import json
 import pandas as pd
 
-
-
 st.set_page_config(
-page_title="Sentiment Analyzer",
-page_icon="🌟",
-layout="wide",
-initial_sidebar_state="expanded"
+    page_title="Sentiment Analyzer",
+    page_icon="🌟",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-
 st.title("Analysis Results")
-
-#This is when lee gives me code i can use
-#Senti_Image = ImgSel.ImgSelector(Sentiment)
-
-
-
 
 Usr_Str_list = st.session_state.get("Usr_Str_list", ["No input provided."])
 Usr_Str = st.session_state.get("Usr_Str", "No input provided.")
 sentiment_result = analyze_text(Usr_Str)
 classification = multi_class_classification(Usr_Str)
 results = []
-
 
 for idx, Usr_Str in enumerate(Usr_Str_list, 1):
     sentiment_result = analyze_text(Usr_Str)
@@ -78,7 +68,6 @@ for idx, Usr_Str in enumerate(Usr_Str_list, 1):
     sentiment_result = analyze_text(Usr_Str)
     classification = multi_class_classification(Usr_Str)
     
-
     sentiment_value = sentiment_result['sentiment']
 
     # if it's a list, grab the first element
@@ -88,21 +77,24 @@ for idx, Usr_Str in enumerate(Usr_Str_list, 1):
     # ensure it's a string
     sentiment_value = str(sentiment_value)
 
-    Senti_Image = Select_image(sentiment_value)
+    # Get emoji from ImgSelector
+    sentiment_emoji = Select_image(sentiment_value)
     
-    colCon, colPie, colRea = st.columns(3,border=True, width="stretch")
-
+    colCon, colPie, colRea = st.columns(3, border=True)
 
     with colCon:
-        st.subheader("Sentiment Analysis Results \n"+sentiment_result['sentiment'])
-        st.image(Senti_Image)
+        st.subheader("Sentiment Analysis Results")
+        st.subheader(sentiment_result['sentiment'])
+        
+        # Display emoji using st.markdown with large font size instead of st.image
+        st.markdown(f"<div style='text-align: center; font-size: 100px;'>{sentiment_emoji}</div>", 
+                   unsafe_allow_html=True)
 
         st.write("Confidence score: " + str(int(sentiment_result['confidence']*100)) + "%")
 
-
     with colPie:
         labels = ["Positive", "Neutral", "Negative"]
-        values = classification['confidence_scores']
+        values = list(classification['confidence_scores'].values())
 
         st.subheader("Sentiment Distribution")
         fig = px.pie(names=labels, values=values, title="Sentiment Distribution", hole=0.3)
@@ -110,10 +102,10 @@ for idx, Usr_Str in enumerate(Usr_Str_list, 1):
 
     with colRea:
         st.subheader("Explanation")
-        # Placeholder for related texts
+        # Display the original sentence
         st.write(Usr_Str)
 
         explanation = explain_classification(Usr_Str)
-        st.write(f" {explanation['explanation']}")
+        st.write(f"{explanation['explanation']}")
 
-    st.markdown("---")  # Separator between sentences           
+    st.markdown("---")  # Separator between sentences
